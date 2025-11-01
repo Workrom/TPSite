@@ -1,0 +1,161 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #d8dddf;
+    /* background-color: #0080ff; */
+    color: #333;
+}
+
+header {
+    background-color: #1a3c5e;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+header nav a:hover {
+    color: #a8d4ff;
+}
+
+.top-container {
+    background-color: #d8dddf;
+    display: flex;
+    /* flex-wrap: wrap; */
+    gap: 0px;
+    /* margin-left: 20px;
+    margin-right: 20px; */
+}
+
+.top-right {
+    /* flex: 0; */
+    /* min-width: 300px; */
+    padding: 20px;
+    /* border-radius: 8px; */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+.top-left {
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items:end;
+    min-height: 400px;
+
+    margin-left: 20px;
+    
+    border-width: 5px;
+    border-style: solid;
+    border-radius: 2%;
+    border-color: rgb(54, 50, 50);
+}
+
+.top-left img {
+    height: 300px;
+    border-radius: 8px;
+}
+
+.top-right {
+    width: 100%;
+}
+
+.top-right h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #1a3c5e;
+}
+
+.top-right p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.full-section {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.full-section h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #1a3c5e;
+}
+
+.full-section p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #444;
+}
+
+.rfid-img {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    background-color: #d8dddf;
+    padding-left: 20px;
+    padding-right: 100px;
+    padding-top: 7px;
+    padding-bottom: 7px;  
+    box-sizing: border-box;
+}
+
+.rfid-img img {
+    width: 40%;
+    max-width: 100%;
+    height: auto;
+}
+
+.rfid-img section{
+    width: 100%;
+    /* height: 100%; */
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #1a3c5e;
+    padding: 15px 0;
+    text-align: center;
+}
+
+footer div {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+
+footer a {
+    text-decoration: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #a8d4ff;
+}
