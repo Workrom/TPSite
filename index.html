@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Profile of a Teacher from University of Customs and Finance">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Teacher Profile - UMSF</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <div>
+        <div class="top-container">
+            <section class="top-left">
+                <img src="images/man1-s.png" alt="Teacher silhouette">
+            </section>
+            <section class="top-right">
+                <h1>Мормуль Микола Федорович</h1>
+                <p>Доцент кафедри комп’ютерних наук та інженерії програмного забезпечення <br><br>
+                    Куратор академічної групи К24-2.<br><br>
+
+                    Керівник студентського наукового гуртка «Математичне моделювання, аналіз та оптимізація
+                    інформаційних, технічних та економічних систем».<br><br>
+
+                    Автор наукових публікацій у періодичних виданнях, які включені до наукометричних баз, Scopus або
+                    WebofScienceCoreCollection, рекомендованих МОН:
+                </p>
+            </section>
+        </div>
+
+        <section class="full-section">
+            <h1>About</h1>
+            <p>
+                У 1978 році закінчив Дніпропетровський державний університет (спеціальність «Прикладна математика») та
+                здобув кваліфікацію математика.<br><br>
+                У 1990 році присуджено науковий ступінь кандидата технічних наук за спеціальністю 01.02.03 – будівельна
+                механіка. Тема дисертації «Багатокритеріальна оптимізація композитних панелей та циліндричних оболонок
+                за допомогою людино-машинних процедур».<br><br>
+                У 1993 році присвоєно вчене звання доцента кафедри вищої математики.<br><br>
+                У 2022 році закінчив Університет митної справи та фінансів та здобув кваліфікацію: ступінь вищої освіти
+                магістр галузь знань “Інформаційні технології” спеціальність “Комп’ютерні науки”.<br><br>
+                <strong>Дисципліни, що викладає:</strong> Лінійна алгебра та аналітична геометрія, Математичний аналіз,
+                Комп’ютерна дискретна математика, Диференціальні рівняння, Математика для економістів (вища математика,
+                економічні моделі та методи, економетрика), Вища математика, Теорія ймовірностей і математична
+                статистика, Методи оптимізації та дослідження операцій, Чисельні методи, Спеціальні розділи вищої
+                математики, Інформаційні технології, Математичні основи інформатики, Теоретична механіка.<br><br>
+                <strong>Сфера наукових інтересів:</strong> математичне моделювання, методи оптимізації, статистика та
+                оптимізація економічних та технічних систем, теорія ризиків, методи прийняття управлінських рішень.
+            </p>
+        </section>
+
+        <section class="rfid-img">
+                <img src="images/pc-v1.png" alt="card">
+        </section>
+        </div>
+    </main>
+
+<div id="dom-navigator-trigger" style="position:fixed; bottom:20px; right:20px;">
+        <button id="start-dom-walker"
+                style="padding:12px 20px; font-size:16px; background:#0066cc; color:#fff; border:none; border-radius:6px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.2);">
+            Explore DOM
+        </button>
+    </div>
+
+    <footer>
+        <div>
+            <a href="http://umsf.dp.ua">UMSF</a>
+            <a href="#">Site Terms of Use</a>
+        </div>
+    </footer>
+</body>
+
+<script>
+        let walker = null;
+        let finishCallback = null;
+
+        function extractNodeInfo(node) {
+            const text = node.textContent.trim().replace(/\s+/g, ' ');
+            return `Element: ${node.tagName}${node.className ? '.' + node.className : ''}\nText: ${text || 'empty'}`;
+        }
+
+        function explore(whenDone) {
+            const curr = walker.currentNode;
+            const info = extractNodeInfo(curr);
+
+            const saved = walker.currentNode;
+            const canBack = walker.previousNode() !== null;
+            walker.currentNode = saved;
+            const canForward = walker.nextNode() !== null;
+            walker.currentNode = saved;
+
+            const atStart = !canBack;
+            const atEnd   = !canForward;
+
+            let msg = info + '\n';
+
+            if (atEnd) {
+                msg += '\nReturn to previous or exit?\nOK | Cancel';
+                if (confirm(msg)) { walker.previousNode(); explore(whenDone); }
+                else { whenDone(); }
+            } else if (atStart) {
+                msg += '\nProceed to next node or terminate?\nOK | Cancel';
+                if (confirm(msg)) { walker.nextNode(); explore(whenDone); }
+                else { whenDone(); }
+            } else {
+                msg += '\nAdvance further or retreat?\nOK | Cancel';
+                if (confirm(msg)) { walker.nextNode(); explore(whenDone); }
+                else { walker.previousNode(); explore(whenDone); }
+            }
+        }
+
+        document.getElementById('start-dom-walker').addEventListener('click', function () {
+            this.parentElement.style.display = 'none';
+            
+            if (!walker) {
+                walker = document.createTreeWalker(
+                    document.documentElement,
+                    NodeFilter.SHOW_ELEMENT
+                );
+            } else {
+                walker.currentNode = document.documentElement;
+                walker.firstChild();
+            }
+
+            explore(function () {
+                alert('Navigation completed.');
+                document.getElementById('dom-navigator-trigger').style.display = 'block';
+            });
+        });
+    </script>
+</html>
