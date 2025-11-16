@@ -83,63 +83,90 @@
         </div>
     </footer>
 </body>
-
 <script>
-        let walker = null;
-        let finishCallback = null;
+    document.addEventListener('DOMContentLoaded', function() {
+    const button = document.getElementById('start-dom-walker');
+    button.addEventListener('click', startTraversal);
+});
 
-        function extractNodeInfo(node) {
-            const text = node.textContent.trim().replace(/\s+/g, ' ');
-            return `Element: ${node.tagName}${node.className ? '.' + node.className : ''}\nText: ${text || 'empty'}`;
+function getContent(node) {
+    if (node.nodeType === 3) { // Text node
+        let text = node.textContent.trim();
+        return text ? `Текстовий вузол: ${text.slice(0, 50)}...` : 'Порожній текстовий вузол';
+    } else if (node.nodeType === 1) { // Element node
+        let text = node.textContent.trim().slice(0, 50);
+        return `${node.tagName}${node.id ? '#' + node.id : ''}${node.className ? '.' + node.className : ''}${text ? ' текст: ' + text + '...' : ''}`;
+    } else {
+        return node.nodeName;
+    }
+}
+
+function startTraversal() {
+    const root = document.body;
+
+    function onExit() {
+        throw 'exit';
+    }
+
+    function onComplete() {
+        alert('Навігація завершена.');
+    }
+
+    try {
+        visit(root, null, onComplete, onExit);
+    } catch (e) {
+        if (e === 'exit') {
+            alert('Навігація перервана.');
+        }
+    }
+}
+
+function visit(node, parent, onComplete, onExit) {
+    const content = getContent(node);
+    const isLeaf = !node.hasChildNodes();
+    let question;
+    let choice;
+
+    if (!parent) {
+        question = `${content}\n\nПродвинутися до наступного вузла чи завершити роботу? (OK = продвинутися, Cancel = завершити)`;
+        choice = confirm(question);
+        if (!choice) {
+            onExit();
+            return;
+        }
+    } else if (isLeaf) {
+        question = `${content}\n\nВернутися назад чи вийти? (OK = повернутися, Cancel = вийти)`;
+        choice = confirm(question);
+        if (choice) {
+            onComplete();
+        } else {
+            onExit();
+        }
+        return;
+    } else {
+        question = `${content}\n\nПройти далі чи повернутися? (OK = пройти далі, Cancel = повернутися)`;
+        choice = confirm(question);
+        if (!choice) {
+            onComplete();
+            return;
+        }
+    }
+    const children = Array.from(node.childNodes).filter(child => child.nodeType === 1 || (child.nodeType === 3 && child.textContent.trim() !== ''));
+    let index = 0;
+
+    function processNextChild() {
+        if (index >= children.length) {
+            onComplete();
+            return;
         }
 
-        function explore(whenDone) {
-            const curr = walker.currentNode;
-            const info = extractNodeInfo(curr);
+        visit(children[index], node, () => {
+            index++;
+            processNextChild();
+        }, onExit);
+    }
 
-            const saved = walker.currentNode;
-            const canBack = walker.previousNode() !== null;
-            walker.currentNode = saved;
-            const canForward = walker.nextNode() !== null;
-            walker.currentNode = saved;
-
-            const atStart = !canBack;
-            const atEnd   = !canForward;
-
-            let msg = info + '\n';
-
-            if (atEnd) {
-                msg += '\nReturn to previous or exit?\nOK | Cancel';
-                if (confirm(msg)) { walker.previousNode(); explore(whenDone); }
-                else { whenDone(); }
-            } else if (atStart) {
-                msg += '\nProceed to next node or terminate?\nOK | Cancel';
-                if (confirm(msg)) { walker.nextNode(); explore(whenDone); }
-                else { whenDone(); }
-            } else {
-                msg += '\nAdvance further or retreat?\nOK | Cancel';
-                if (confirm(msg)) { walker.nextNode(); explore(whenDone); }
-                else { walker.previousNode(); explore(whenDone); }
-            }
-        }
-
-        document.getElementById('start-dom-walker').addEventListener('click', function () {
-            this.parentElement.style.display = 'none';
-            
-            if (!walker) {
-                walker = document.createTreeWalker(
-                    document.documentElement,
-                    NodeFilter.SHOW_ELEMENT
-                );
-            } else {
-                walker.currentNode = document.documentElement;
-                walker.firstChild();
-            }
-
-            explore(function () {
-                alert('Navigation completed.');
-                document.getElementById('dom-navigator-trigger').style.display = 'block';
-            });
-        });
-    </script>
+    processNextChild();
+}
+</script>
 </html>
